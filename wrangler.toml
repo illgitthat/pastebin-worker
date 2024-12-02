@@ -13,6 +13,11 @@ rules = [
 # lines below are what you should modify
 #----------------------------------------
 
+# [vars.BASIC_AUTH]
+# Defined via the Cloudflare portal to avoid committing secrets.
+# Make sure deployed version has JSON object with keys for each user.
+# E.g. {"user": "Passwordfortheuser"}
+
 [[routes]]
 # Refer to https://developers.cloudflare.com/workers/wrangler/configuration/#routes
 pattern = "f.adamcbloom.com"
