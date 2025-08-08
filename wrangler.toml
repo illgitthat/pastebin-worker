@@ -4,6 +4,9 @@ compatibility_date = "2025-04-24"
 workers_dev = false
 main = "worker/index.ts"
 
+[build]
+command = "yarn build:frontend"
+
 [[rules]]
 type = "Text"
 globs = [ "**/*.html", "**/*.md" ]
