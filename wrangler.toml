@@ -22,14 +22,18 @@ crons = ["0 0 * * *"]
 # lines below are what you should modify
 #----------------------------------------
 
+# [vars.BASIC_AUTH]
+# Defined via the Cloudflare portal to avoid committing secrets.
+# Make sure deployed version has JSON object with keys for each user.
+# E.g. {"user": "Passwordfortheuser"}
 [[routes]]
 # Refer to https://developers.cloudflare.com/workers/wrangler/configuration/#routes
-pattern = "shz.al"
+pattern = "f.adamcbloom.com"
 custom_domain = true
 
 [[kv_namespaces]]
 binding = "PB"  # do not touch this
-id = "435f8959b9de485ea48751ba557d90f5"  # id of your KV namespace
+id = "302dafa9d538485687f321458f270681"  # id of your KV namespace
 
 [[r2_buckets]]
 binding = "R2"  # do not touch this
@@ -37,19 +41,19 @@ bucket_name = "pb-shz-al"  # bucket name of your R2 bucket
 
 [vars]
 # must be consistent with your routes
-DEPLOY_URL = "https://shz.al"
+BASE_URL = "https://f.adamcbloom.com"
 
 # url to repo, displayed in the index page
-REPO = "https://github.com/SharzyL/pastebin-worker"
+REPO = "https://github.com/illgitthat/pastebin-worker"
 
 # the page title displayed in index page
 INDEX_PAGE_TITLE = "Pastebin Worker"
 
 # the name displayed in TOS
-TOS_MAINTAINER = "Sharzy"
+TOS_MAINTAINER = "Adam"
 
 # the email displayed in TOS
-TOS_MAIL = "pb@shz.al"
+TOS_MAIL = "pb@adamcbloom.com"
 
 # Cache-Control max-age for static pages
 CACHE_STATIC_PAGE_AGE = 7200
