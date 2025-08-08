@@ -40,7 +40,7 @@ id = "302dafa9d538485687f321458f270681"  # id of your KV namespace
 
 [[r2_buckets]]
 binding = "R2"  # do not touch this
-bucket_name = "pb-shz-al"  # bucket name of your R2 bucket
+bucket_name = "pastebin-worker-ab"  # bucket name of your R2 bucket
 
 [vars]
 # must be consistent with your routes
