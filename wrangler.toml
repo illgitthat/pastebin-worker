@@ -45,6 +45,7 @@ bucket_name = "pb-shz-al"  # bucket name of your R2 bucket
 [vars]
 # must be consistent with your routes
 BASE_URL = "https://f.adamcbloom.com"
+DEPLOY_URL = "https://f.adamcbloom.com"
 
 # url to repo, displayed in the index page
 REPO = "https://github.com/illgitthat/pastebin-worker"
