@@ -5,11 +5,11 @@ workers_dev = false
 main = "worker/index.ts"
 
 [build]
-command = "yarn build:frontend"
+command = "pnpm build:frontend"
 
 [[rules]]
 type = "Text"
-globs = [ "**/*.html", "**/*.md" ]
+globs = [ "**/*.html", "**/*.md", "**/*.css" ]
 fallthrough = true
 
 [assets]
@@ -20,6 +20,10 @@ binding = "ASSETS"
 [triggers]
 # clean r2 garbage every day
 crons = ["0 0 * * *"]
+
+[observability]
+# enable to collect logs
+enabled = true
 
 #----------------------------------------
 # lines below are what you should modify
@@ -44,7 +48,6 @@ bucket_name = "pastebin-worker-ab"  # bucket name of your R2 bucket
 
 [vars]
 # must be consistent with your routes
-BASE_URL = "https://f.adamcbloom.com"
 DEPLOY_URL = "https://f.adamcbloom.com"
 
 # url to repo, displayed in the index page
@@ -69,17 +72,17 @@ CACHE_PASTE_AGE = 600
 DEFAULT_EXPIRATION = "7d"
 
 # Max expiration
-MAX_EXPIRATION = "30d"
+MAX_EXPIRATION = "90d"
 
 # A collection of {username: password} pair
 # Leave empty to disable auth
 BASIC_AUTH = {}
 
 # Files larger than this threshold will be stored in R2
-R2_THRESHOLD = "100K"
+R2_THRESHOLD = "20K"
 
 # File larger than this will be denied
-R2_MAX_ALLOWED = "100M"
+R2_MAX_ALLOWED = "256M"
 
 # The following mimetypes will be converted to text/plain
 DISALLOWED_MIME_FOR_PASTE = ["text/html", "audio/x-mpegurl"]
