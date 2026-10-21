@@ -1,4 +1,8 @@
+packages:
+  - "."
 allowBuilds:
   esbuild: true
   msw: true
   workerd: true
+overrides:
+  stringify-entities: 4.0.2
