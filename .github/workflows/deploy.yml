@@ -1,4 +1,6 @@
-name: Test and Deploy
+# Deploys are handled by Cloudflare Workers Builds (connected to this repo),
+# so no Cloudflare credentials are stored in GitHub. This workflow only tests.
+name: Test
 on:
   push:
     branches:
@@ -8,9 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
-    environment: deploy
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -34,14 +35,7 @@ jobs:
 
       - name: "Test"
         run: |
-          pnpm fmt
+          pnpm prettier -c .
           pnpm lint
           pnpm typecheck
           pnpm test --testTimeout 15000
-
-      - name: "Deploy"
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-        run: |
-          pnpm wrangler deploy
