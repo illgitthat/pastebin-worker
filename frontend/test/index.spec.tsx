@@ -20,9 +20,20 @@ export const mockedPasteContent = "something"
 let lastUpload: string | undefined
 
 export const server = setupServer(
+  // jsdom sends a CORS preflight since the test page is not served from DEPLOY_URL
+  http.options(`${__WRANGLER_CONFIG__.DEPLOY_URL}/`, () => {
+    return new HttpResponse(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Headers": "*",
+      },
+    })
+  }),
   http.post(`${__WRANGLER_CONFIG__.DEPLOY_URL}/`, async ({ request }) => {
     lastUpload = await request.text()
-    return HttpResponse.json(mockedPasteUpload)
+    return HttpResponse.json(mockedPasteUpload, { headers: { "Access-Control-Allow-Origin": "*" } })
   }),
   http.head(`${__WRANGLER_CONFIG__.DEPLOY_URL}/abcd`, () => {
     return new HttpResponse(null, {

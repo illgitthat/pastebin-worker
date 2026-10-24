@@ -27,6 +27,8 @@ async function connect(ctx: ExecutionContext, channelId: string = CHANNEL_ID): P
   )
   expect(resp.status).toStrictEqual(101)
   const ws = resp.webSocket!
+  // newer compatibility dates deliver binary frames as Blob by default
+  ws.binaryType = "arraybuffer"
 
   const queue: Frame[] = []
   const waiters: ((f: Frame) => void)[] = []
