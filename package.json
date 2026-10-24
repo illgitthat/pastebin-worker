@@ -70,6 +70,8 @@
     "xss": "^1.0.16"
   },
   "resolutions": {
-    "stringify-entities": "4.0.2"
+    "stringify-entities": "4.0.2",
+    "miniflare>undici": "^7.30.1",
+    "@cloudflare/vitest-plugin>zod": "^4.6.6"
   }
 }
