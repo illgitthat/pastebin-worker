@@ -21,6 +21,8 @@ import type { UploadProgress } from "../utils/uploader.js"
 import { uploadPaste } from "../utils/uploader.js"
 import { tst } from "../utils/overrides.js"
 
+import { LIVE_PAGE_PATH } from "../../shared/live.js"
+
 import "../style.css"
 
 export function PasteBin({ config }: { config: Env }) {
@@ -37,7 +39,7 @@ export function PasteBin({ config }: { config: Env }) {
     name: "",
     password: "",
     uploadKind: "short",
-    doEncrypt: false,
+    doEncrypt: true,
   })
 
   const [pasteResponse, setPasteResponse] = useState<PasteResponse | undefined>(undefined)
@@ -90,6 +92,10 @@ export function PasteBin({ config }: { config: Env }) {
           const contentLength = Number(headResp.headers.get("Content-Length"))
           const contentLang = headResp.headers.get("X-PB-Highlight-Language")
           const contentDisp = headResp.headers.get("Content-Disposition")
+
+          // keep an update as encrypted as the paste it replaces
+          const isEncrypted = headResp.headers.get("X-PB-Encryption-Scheme") !== null
+          setPasteSetting((setting) => ({ ...setting, doEncrypt: isEncrypted }))
 
           const isText = contentType?.startsWith("text/") || !!contentLang
           if (!isText || !Number.isFinite(contentLength) || contentLength >= MAX_AUTO_FETCH_BYTES) {
@@ -208,7 +214,13 @@ export function PasteBin({ config }: { config: Env }) {
         <h1 className="text-3xl">{config.INDEX_PAGE_TITLE}</h1>
         <DarkModeToggle modeSelection={modeSelection} setModeSelection={setModeSelection} />
       </div>
-      <p className="my-2">A pastebin running on Cloudflare Workers.</p>
+      <p className="my-2">
+        A pastebin running on Cloudflare Workers. It now has{" "}
+        <Link className={tst} href={`${config.DEPLOY_URL}${LIVE_PAGE_PATH}`}>
+          live mode
+        </Link>
+        .
+      </p>
       <p className="my-2">
         <b>Usage</b>: paste text or drop a file, then share the returned URL. You can also use{" "}
         <Link className={tst} href={`${config.DEPLOY_URL}/doc/curl`}>
@@ -245,7 +257,13 @@ export function PasteBin({ config }: { config: Env }) {
 
   const submitter = (
     <div className="flex flex-row items-stretch">
-      <button type="button" onClick={onStartUpload} disabled={uploadDisabled} className={uploadClass}>
+      <button
+        type="button"
+        onClick={onStartUpload}
+        disabled={uploadDisabled}
+        title="Ctrl+Enter in the editor"
+        className={uploadClass}
+      >
         {isManageMode ? "Update" : "Upload"}
       </button>
       {isManageMode && (
@@ -280,6 +298,9 @@ export function PasteBin({ config }: { config: Env }) {
           onStateChange={setEditorState}
           config={config}
           showModal={showModal}
+          onCtrlEnter={() => {
+            if (!uploadDisabled) onStartUpload()
+          }}
           className="mt-6 mb-4 mx-2 lg:mx-0"
         />
         <div className="flex flex-col items-start lg:flex-row gap-4 mx-2 lg:mx-0">

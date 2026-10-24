@@ -21,6 +21,19 @@ binding = "ASSETS"
 # clean r2 garbage every day
 crons = ["0 0 * * *"]
 
+[[durable_objects.bindings]]
+# one object per live channel, relaying encrypted messages between peers
+name = "LIVE_CHANNEL"
+class_name = "LiveChannel"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["LiveRoom"]
+
+[[migrations]]
+tag = "v2"
+renamed_classes = [{ from = "LiveRoom", to = "LiveChannel" }]
+
 [observability]
 # enable to collect logs
 enabled = true

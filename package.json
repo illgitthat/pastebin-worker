@@ -12,7 +12,7 @@
     "dev:frontend": "vite serve frontend --mode development",
     "preview:frontend": "vite preview --outDir dist/frontend",
     "dev": "wrangler dev --var DEPLOY_URL:http://localhost:8787 INDEX_PAGE_TITLE:\"Pastebin Worker (dev)\" --port 8787",
-    "gentypes": "wrangler types --strict-vars false",
+    "gentypes": "wrangler types --strict-vars false && node scripts/fix-worker-types.js",
     "build": "wrangler deploy --dry-run --outdir=dist",
     "delete-paste": "wrangler kv key delete --binding PB",
     "test": "vitest",
@@ -24,7 +24,7 @@
   "author": "SharzyL <me@sharzy.in>",
   "license": "MIT",
   "devDependencies": {
-    "@cloudflare/vitest-plugin": "^1.4.6",
+    "@cloudflare/vitest-plugin": "^1.4.7",
     "@craftamap/esbuild-plugin-html": "^0.9.0",
     "@eslint/js": "^10.0.1",
     "@testing-library/dom": "^10.4.2",
@@ -36,14 +36,14 @@
     "@vitest/coverage-istanbul": "5.0.5",
     "eslint": "^10.13.0",
     "jsdom": "^30.1.3",
-    "msw": "^2.15.0",
+    "msw": "^3.0.3",
     "prettier": "^3.9.10",
     "toml": "^5.0.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.0",
     "vite": "^8.3.5",
     "vitest": "5.0.5",
-    "wrangler": "^4.151.3"
+    "wrangler": "^4.152.0"
   },
   "prettier": {
     "singleQuote": false,
@@ -70,6 +70,8 @@
     "xss": "^1.0.16"
   },
   "resolutions": {
-    "stringify-entities": "4.0.2"
+    "stringify-entities": "4.0.2",
+    "miniflare>undici": "^7.30.1",
+    "@cloudflare/vitest-plugin>zod": "^4.6.6"
   }
 }
